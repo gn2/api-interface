@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "api-interface"
     gem.summary = %Q{Create simple and clean software API for ruby libraries}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{Create simple and clean software API for ruby libraries}
     gem.email = "adrien@gn2.fr"
     gem.homepage = "http://github.com/gn2/api-interface"
     gem.authors = ["Adrien"]
