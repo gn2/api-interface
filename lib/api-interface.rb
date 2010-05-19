@@ -1,8 +1,8 @@
 module ApiInterface
-  
+
   def register(kind, object, name)
     return false unless name
-    
+
     # Below, we include a module to add methods and classes. We are
     # using the behaviour of Module#append_features. The content
     # of these Module will only be added to the API if it's not already
@@ -17,8 +17,8 @@ module ApiInterface
       # object
       include Module.new {
         class_eval <<-RUBY
-          define_method name do
-            #{object}::#{name}
+          define_method name do |*args|
+            #{object}::#{name}(*args)
           end
         RUBY
       }
@@ -29,8 +29,6 @@ module ApiInterface
     # object = Module to include
     # name = Name of the new module in API
     when :module then
-      # The module is re-included in order to hide
-      # all the private stuff from the API
       include Module.new {
         class_eval <<-RUBY
           module #{name.to_s}
@@ -40,11 +38,9 @@ module ApiInterface
       }
 
     # When adding a module in Api
-    # object = Module to include    
+    # object = Module to include
     # name = Name of the new class in API
     when :class then
-      # The class is inherited in order to hide
-      # all the private stuff from the API
       include Module.new {
         class_eval <<-RUBY
           class #{name.to_s} < #{object}
@@ -54,5 +50,5 @@ module ApiInterface
     end # case
   end # register method
   protected :register
-  
+
 end

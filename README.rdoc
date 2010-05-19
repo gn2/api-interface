@@ -4,12 +4,7 @@
 == Setup
 
 1. Install api-interface gem
-
 2. Create a module for your api and extend ApiInterface
-  module Api
-    extend ApiInterface
-  end
-
 3. You can start registering methods, modules and classes to your Api.
 
 Note: Methods, Modules and Classes are only added if they do not exist in the Api already. (not overwritten)
@@ -21,8 +16,8 @@ Note: Methods, Modules and Classes are only added if they do not exist in the Ap
     extend ApiInterface
     register :method, Path::To::Method::Container, :method_name
   end
-  
-  # Now you can call MyApi::method_name and Path::To::Method::Container::method_name will be called in the background.
+
+Now you can call MyApi::method_name and Path::To::Method::Container::method_name will be called in the background.
 
 === Adding a module to your API
   module MyApi
@@ -30,7 +25,7 @@ Note: Methods, Modules and Classes are only added if they do not exist in the Ap
     register :module, Path::To::MyModule, :ModuleNameInAPI
   end
 
-  # Now you can use MyApi::ModuleNameInAPI to access all public/protected methods of Path::To::MyModule.
+Now you can use MyApi::ModuleNameInAPI to access all public/protected methods of Path::To::MyModule.
 
 === Adding a module to your API
   module MyApi
@@ -38,7 +33,7 @@ Note: Methods, Modules and Classes are only added if they do not exist in the Ap
     register :class, Path::To::Klass, :Class4Api
   end
 
-  # Now you can use MyApi::Class4Api to access all public/protected methods ofPath::To::Klass.
+Now you can use MyApi::Class4Api to access all public/protected methods ofPath::To::Klass.
 
 == Examples
 
@@ -64,11 +59,6 @@ Your code base:
         def bar
           puts "Hello bar"
         end
-
-        private
-        def private_bar
-          puts "Hello self.private_bar"
-        end
       end
     end
   end
@@ -92,11 +82,6 @@ Testing it words:
   Hello::World::Api::bar
   puts "---- testing register :module ----"
   Hello::World::Api::Module4Api.foo
-  begin
-    Hello::World::Api::Module4Api.private_bar
-  rescue
-    puts "This doesn't work because private_bar is not public."
-  end
   puts "---- testing register :class ----"
   Hello::World::Api::Class4Api.new.foo
 
@@ -105,12 +90,11 @@ Result:
   Hello self.bar
   ---- testing register :module ----
   Hello foo
-  This doesn't work because private_bar is not public.
   ---- testing register :class ----
   Hello Klass#foo
 
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
@@ -121,4 +105,4 @@ Result:
 
 == Copyright
 
-Copyright (c) 2010 Adrien. See LICENSE for details.
+Copyright (c) 2010 Adrien (adrien[at]gn2[dot]fr) . See LICENSE for details.
