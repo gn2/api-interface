@@ -1,7 +1,7 @@
 = api-interface
 ==== Create simple and clean software API for ruby libraries.
 
-== How to use it
+== Setup
 
 1. Install api-interface gem
 
@@ -12,77 +12,102 @@
 
 3. You can start registering methods, modules and classes to your Api.
 
-
 Note: Methods, Modules and Classes are only added if they do not exist in the Api already. (not overwritten)
+
+== Usage
+
+=== Adding a method to your API
+  module MyApi
+    extend ApiInterface
+    register :method, Path::To::Method::Container, :method_name
+  end
+  
+  # Now you can call MyApi::method_name and Path::To::Method::Container::method_name will be called in the background.
+
+=== Adding a module to your API
+  module MyApi
+    extend ApiInterface
+    register :module, Path::To::MyModule, :ModuleNameInAPI
+  end
+
+  # Now you can use MyApi::ModuleNameInAPI to access all public/protected methods of Path::To::MyModule.
+
+=== Adding a module to your API
+  module MyApi
+    extend ApiInterface
+    register :class, Path::To::Klass, :Class4Api
+  end
+
+  # Now you can use MyApi::Class4Api to access all public/protected methods ofPath::To::Klass.
 
 == Examples
 
 Your code base:
-    module Hello
-      module World
-        class Klass
-          def foo
-            puts "Hello Klass#foo"
-          end
+  module Hello
+    module World
+      class Klass
+        def foo
+          puts "Hello Klass#foo"
+        end
+      end
+
+      module B
+        def self.bar
+          puts "Hello self.bar"
+        end
+      end
+
+      module C
+        def foo
+          puts "Hello foo"
+        end
+        def bar
+          puts "Hello bar"
         end
 
-        module B
-          def self.bar
-            puts "Hello self.bar"
-          end
-        end
-
-        module C
-          def foo
-            puts "Hello foo"
-          end
-          def bar
-            puts "Hello bar"
-          end
-
-          private
-          def private_bar
-            puts "Hello self.private_bar"
-          end
+        private
+        def private_bar
+          puts "Hello self.private_bar"
         end
       end
     end
+  end
 
 Your API:
-    module Hello
-      module World
-        module Api
-          extend ApiInterface
+  module Hello
+    module World
+      module Api
+        extend ApiInterface
 
-          register :method, Hello::World::B, :bar
-          register :module, Hello::World::C, :Module4Api
-          register :class, Hello::World::Klass, :Class4Api
+        register :method, Hello::World::B, :bar
+        register :module, Hello::World::C, :Module4Api
+        register :class, Hello::World::Klass, :Class4Api
 
-        end
       end
     end
+  end
 
 Testing it words:
-    puts "---- testing register :method ----"
-    Hello::World::Api::bar
-    puts "---- testing register :module ----"
-    Hello::World::Api::Module4Api.foo
-    begin
-      Hello::World::Api::Module4Api.private_bar
-    rescue
-      puts "This doesn't work because private_bar is not public."
-    end
-    puts "---- testing register :class ----"
-    Hello::World::Api::Class4Api.new.foo
+  puts "---- testing register :method ----"
+  Hello::World::Api::bar
+  puts "---- testing register :module ----"
+  Hello::World::Api::Module4Api.foo
+  begin
+    Hello::World::Api::Module4Api.private_bar
+  rescue
+    puts "This doesn't work because private_bar is not public."
+  end
+  puts "---- testing register :class ----"
+  Hello::World::Api::Class4Api.new.foo
 
 Result:
-    ---- testing register :method ----
-    Hello self.bar
-    ---- testing register :module ----
-    Hello foo
-    This doesn't work because private_bar is not public.
-    ---- testing register :class ----
-    Hello Klass#foo
+  ---- testing register :method ----
+  Hello self.bar
+  ---- testing register :module ----
+  Hello foo
+  This doesn't work because private_bar is not public.
+  ---- testing register :class ----
+  Hello Klass#foo
 
 == Note on Patches/Pull Requests
  
