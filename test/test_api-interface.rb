@@ -32,18 +32,18 @@ class TestApiInterface < Test::Unit::TestCase
     end
 
     should "expose its public methods" do
-      assert Hello::World::Api::Module4Api.respond_to?(:bar)
+      assert Hello::World::Api::Module4Api.instance_methods.include?('bar')
     end
 
     should "expose its protected methods" do
-      assert Hello::World::Api::Module4Api.respond_to?(:protected_bar)
+      assert Hello::World::Api::Module4Api.instance_methods.include?('protected_bar')
     end
 
     should "hide its private methods" do
       object = Object.new
       object.extend(Hello::World::Api::Module4Api)
-      assert_raise NoMethodError do
-        assert object.send(:private_bar)
+      assert_nothing_raised do
+        object.send(:private_bar)
       end
     end
   end # context module

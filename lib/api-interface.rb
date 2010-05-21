@@ -32,7 +32,7 @@ module ApiInterface
       include Module.new {
         class_eval <<-RUBY
           module #{name.to_s}
-             extend #{object}
+             include #{object}
           end.freeze
         RUBY
       }
